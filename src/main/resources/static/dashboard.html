@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dashboard - Team 4 U</title>
+    <link rel="stylesheet" href="/homepage.css" />
+  </head>
+  <body>
+    <div class="header">Welcome to Team 4 U</div>
+    <main class="center">
+      <div style="text-align:center;color:#fff;">
+        <p>You are signed in (demo). Implement session handling for real auth.</p>
+        <div style="margin-top:12px;">
+          <a class="btn" href="/loggedInHomepage.html">Home</a>
+          <a class="btn" href="/login.html" style="margin-left:12px;">Sign out</a>
+        </div>
+        <div style="margin-top:18px;">
+          <button id="enable-2fa" class="btn">Enable 2FA</button>
+        </div>
+        <div id="2fa-area" style="margin-top:12px;"></div>
+      </div>
+    </main>
+    <script type="module" src="/dashboard.js"></script>
+    <footer class="footer"></footer>
+  </body>
+</html>

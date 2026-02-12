@@ -1,0 +1,45 @@
+/* Black background, white text, centered layout */
+html, body {
+  height: 100%;
+  background: #000;
+  color: #fff;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+body {
+    cursor: url("/UnselectedDogCursor32.png") 16 16, auto;
+}
+
+.btn {
+  background: transparent;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-size: 4rem;
+  cursor: url("/SelectedDogCursor32.png") 16 16, pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+#app {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  font-size: 6rem;
+  font-weight: 600;
+  margin: 0px;
+}
+p {
+    margin: 20px;
+}
+
+.btn:hover {
+  background: #fff;
+  color: #000;
+}
+
