@@ -31,3 +31,10 @@ public class DemoApplication {
   }
 
 }
+
+//Powershell code to send message test:
+/*
+$secure = ConvertTo-SecureString "gcypapzejhxywgte" -AsPlainText -Force
+$cred = New-Object System.Management.Automation.PSCredential("alfred.sherlock@gmail.com",$secure)
+Send-MailMessage -From "alfred.sherlock@gmail.com" -To "17607042102@tmomail.net" -Subject "Doorbell Alert" -Body "Doorbell is rung (test)" -SmtpServer "smtp.gmail.com" -Credential $cred -Port 587 -UseSsl
+*/

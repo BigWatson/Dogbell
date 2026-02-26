@@ -100,4 +100,5 @@ public class HelloController {
     if (!ok) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error","invalid code"));
     return ResponseEntity.ok(Map.of("message","2fa verified"));
   }
+ 
 }

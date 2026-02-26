@@ -1,12 +1,16 @@
-version: '3.8'
 services:
   textbelt:
-    image: textbelt/textbelt:latest
+    build: ./textbelt-local
+    image: textbelt:local
     restart: unless-stopped
     ports:
       - "8080:80"
     environment:
       - TEXTBELT_REDIS_URL=redis://redis:6379
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=alfred.sherlock@gmail.com
+      - SMTP_PASS=gcypapzejhxywgte
     depends_on:
       - redis
 

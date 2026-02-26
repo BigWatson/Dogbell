@@ -10,6 +10,8 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.example.demo.model.PiDevice;
+import com.example.demo.service.PiStore;
 import com.example.demo.sms.SmsService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,12 +28,14 @@ public class MqttEventListener implements MqttCallback {
     private final MqttClient client;
     private final ObjectMapper mapper;
     private final SmsService smsService;
+    private final PiStore piStore;
 
     @Autowired
-    public MqttEventListener(MqttClient client, ObjectMapper mapper, SmsService smsService) {
+    public MqttEventListener(MqttClient client, ObjectMapper mapper, SmsService smsService, PiStore piStore) {
         this.client = client;
         this.mapper = mapper;
         this.smsService = smsService;
+        this.piStore = piStore;
     }
 
     @PostConstruct
@@ -71,6 +75,19 @@ public class MqttEventListener implements MqttCallback {
         String payload = new String(message.getPayload(), StandardCharsets.UTF_8);
         JsonNode node = mapper.readTree(payload);
         String type = node.path("type").asText(null);
+
+        if ("DOORBELL_RING".equals(type)) {
+            // Pi pressed the button — look up the registered owner and text them
+            String deviceId = extractDeviceIdFromTopic(topic);
+            PiDevice device = piStore.get(deviceId);
+            if (device == null || !device.isRegistered()) {
+                System.err.println("DOORBELL_RING from unregistered Pi: " + deviceId);
+                return;
+            }
+            boolean ok = smsService.sendSms(device.getPhone(), "Your dog is at the door!", device.getGatewayEmail());
+            System.out.printf("Doorbell SMS to %s (Pi %s) result=%s\n", device.getUsername(), deviceId, ok);
+            return;
+        }
 
         if ("SEND_SMS_REQUEST".equals(type)) {
             String to = node.path("to").asText(null);
