@@ -35,3 +35,11 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Sensitive / secrets ###
+src/main/resources/application.properties
+pistore.json
+userstore.dat
+
+### Claude Code temp files ###
+tmpclaude-*
