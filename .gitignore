@@ -43,3 +43,4 @@ userstore.dat
 
 ### Claude Code temp files ###
 tmpclaude-*
+.claude/

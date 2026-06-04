@@ -25,6 +25,10 @@ import jakarta.annotation.PostConstruct;
  *
  * Pre-seeded Pi IDs are loaded from the 'pi.seeded-ids' property (comma-separated).
  * Each ID is inserted as unregistered on first startup if it does not already exist.
+ *
+ * NOTE: File-based storage is suitable for single-instance development / demo use.
+ * It does not support concurrent server instances and offers no transactional guarantees.
+ * For production, migrate to a database (e.g. H2, PostgreSQL, or SQLite).
  */
 @Service
 public class PiStore {
@@ -49,6 +53,8 @@ public class PiStore {
                 byte[] json = Files.readAllBytes(storePath);
                 Map<String, PiDevice> loaded = mapper.readValue(json, new TypeReference<>() {});
                 devices.putAll(loaded);
+                // Migrate any legacy single-phone records to contacts list
+                devices.values().forEach(PiDevice::migrateLegacy);
                 log.info("Loaded {} Pi device(s) from {}", devices.size(), storePath);
             } catch (Exception e) {
                 log.warn("Failed to load Pi store — starting fresh", e);
@@ -85,7 +91,28 @@ public class PiStore {
         save();
     }
 
+    /**
+     * Atomically check that a Pi exists and is unregistered, then register it.
+     * Returns "OK" on success, or an error key ("NOT_FOUND", "ALREADY_REGISTERED").
+     */
+    public synchronized String tryRegister(String piId, String username,
+                                           java.util.List<PiDevice.PhoneContact> contacts) {
+        PiDevice device = devices.get(piId);
+        if (device == null) return "NOT_FOUND";
+        if (device.isRegistered()) return "ALREADY_REGISTERED";
+        device.setUsername(username);
+        device.setContacts(contacts);
+        device.setRegistered(true);
+        save();
+        return "OK";
+    }
+
     public boolean exists(String piId) {
         return devices.containsKey(piId);
+    }
+
+    /** Returns all devices in the store. */
+    public Map<String, PiDevice> getAll() {
+        return new java.util.HashMap<>(devices);
     }
 }

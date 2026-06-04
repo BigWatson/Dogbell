@@ -3,25 +3,49 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Your Team 4 U dashboard — manage 2FA and your registered Raspberry Pi doorbells." />
     <title>Dashboard - Team 4 U</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/TEAM4U.png" type="image/png" />
+    <link rel="stylesheet" href="/theme.css" />
     <link rel="stylesheet" href="/homepage.css" />
+    <link rel="stylesheet" href="/dashboard.css" />
   </head>
   <body>
-    <div class="header">Welcome to Team 4 U</div>
+
+    <nav class="navbar">
+      <a class="nav-brand" href="/loggedInHomepage.html"><span aria-hidden="true">🐾</span> Team 4 U</a>
+      <div class="nav-links">
+        <a class="nav-link" href="/loggedInHomepage.html">Home</a>
+        <a class="nav-link" href="/dogbellSetup.html">Dogbell Setup</a>
+        <button class="btn btn-sm" id="sign-out-btn" type="button">Sign out</button>
+      </div>
+    </nav>
+
     <main class="center">
-      <div style="text-align:center;color:#fff;">
-        <p>You are signed in (demo). Implement session handling for real auth.</p>
-        <div style="margin-top:12px;">
-          <a class="btn" href="/loggedInHomepage.html">Home</a>
-          <a class="btn" href="/login.html" style="margin-left:12px;">Sign out</a>
+      <div class="dashboard-wrap">
+        <div class="dashboard-card">
+          <h1 class="dashboard-title">Dashboard</h1>
+          <p class="dashboard-lead">Welcome back<span id="welcome-name"></span>.</p>
+
+          <div class="dashboard-actions">
+            <button id="enable-2fa" class="btn" type="button">Enable 2FA</button>
+          </div>
+          <div id="2fa-area"></div>
+
+          <div class="dashboard-section">
+            <h3>Doorbell Pi</h3>
+            <p>Register and manage your Raspberry Pi doorbells from the setup page.</p>
+            <a class="btn" href="/dogbellSetup.html">Go to Dogbell Setup</a>
+          </div>
         </div>
-        <div style="margin-top:18px;">
-          <button id="enable-2fa" class="btn">Enable 2FA</button>
-        </div>
-        <div id="2fa-area" style="margin-top:12px;"></div>
       </div>
     </main>
+
     <script type="module" src="/dashboard.js"></script>
-    <footer class="footer"></footer>
+    <footer class="footer-dark">
+      <p class="footer-tagline">"You barked up the right tree"</p>
+      <p class="footer-copy">© 2026 Team 4 U</p>
+    </footer>
   </body>
 </html>

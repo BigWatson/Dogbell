@@ -25,12 +25,8 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-graphql'
-	implementation 'org.springframework.boot:spring-boot-starter-restclient'
-	implementation 'org.springframework.boot:spring-boot-starter-webclient'
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-	// Jackson for JSON binding (ensure available at compile time)
+	// Jackson for JSON binding (included transitively by webmvc, explicit for clarity)
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	// TOTP / Google Authenticator helper
 	implementation 'com.warrenstrange:googleauth:1.4.0'
@@ -39,16 +35,11 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-graphql-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webclient-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
-	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
 	// MQTT client for backend -> device messaging
 	implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
-	// Spring Mail for SMTP sending (used for email->SMS gateway fallback)
+	// Spring Mail for SMTP sending (used for email->SMS gateway)
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 

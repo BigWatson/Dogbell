@@ -3,11 +3,98 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Dogbell Setup</title>
+    <meta name="description" content="Register your Raspberry Pi doorbell with Team 4 U and add phone numbers for SMS alerts." />
+    <title>Dogbell Setup - Team 4 U</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/TEAM4U.png" type="image/png" />
+    <link rel="stylesheet" href="/theme.css" />
     <link rel="stylesheet" href="/login.css" />
+    <link rel="stylesheet" href="/dogbellSetup.css" />
   </head>
   <body>
-    <div id="app"></div>
+
+    <nav class="navbar">
+      <a class="nav-brand" href="/loggedInHomepage.html"><span aria-hidden="true">🐾</span> Team 4 U</a>
+      <div class="nav-links">
+        <a class="nav-link" href="/loggedInHomepage.html">Home</a>
+        <a class="nav-link" href="/dashboard.html">Dashboard</a>
+        <button class="btn btn-sm" id="sign-out-btn" type="button">Sign out</button>
+      </div>
+    </nav>
+
+    <section class="hero dogbell-hero">
+      <div class="dogbell-hero-icon" aria-hidden="true">🔔</div>
+      <h1 class="hero-title">Dogbell Setup</h1>
+      <p class="dogbell-hero-sub">Register your Raspberry Pi doorbell and get text alerts.</p>
+    </section>
+
+    <main class="center setup-main">
+      <div class="setup-container">
+
+        <div class="section-card">
+          <h2 class="section-title">How It Works</h2>
+          <div class="steps">
+            <div class="step"><span class="step-num">1</span>Enter your Pi ID</div>
+            <div class="step"><span class="step-num">2</span>Add phone numbers</div>
+            <div class="step"><span class="step-num">3</span>Register &amp; test</div>
+          </div>
+          <p class="section-subtitle section-subtitle-tight">
+            When your dog presses the doorbell button on the Pi, it sends a signal through MQTT.
+            The server receives it and texts everyone you've added.
+          </p>
+        </div>
+
+        <div class="section-card" id="register-section">
+          <h2 class="section-title">Register Your Pi</h2>
+          <p class="section-subtitle">Enter your Pi ID, then add phone numbers for everyone who should get doorbell alerts.</p>
+
+          <div class="form-group">
+            <label for="pi-id">Pi Device ID</label>
+            <input id="pi-id" type="text" placeholder="e.g. DOGBELL-001" autocomplete="off" />
+          </div>
+
+          <div class="form-group">
+            <label for="pi-username">Your Username</label>
+            <input id="pi-username" type="text" placeholder="Your account username" autocomplete="username" />
+          </div>
+
+          <hr class="dogbell-divider" />
+          <span class="phone-numbers-label">Phone Numbers</span>
+
+          <div id="contacts-list"></div>
+
+          <button type="button" id="add-contact-btn" class="add-contact-btn">+ Add another number</button>
+
+          <p class="carrier-note">
+            Gateway depends on carrier: <strong>@tmomail.net</strong> (T-Mobile),
+            <strong>@txt.att.net</strong> (AT&amp;T), <strong>@vtext.com</strong> (Verizon),
+            <strong>@messaging.sprintpcs.com</strong> (Sprint)
+          </p>
+
+          <button id="register-btn" class="btn register-btn-full">Register Pi</button>
+          <div id="register-msg" class="msg register-msg-spaced" role="alert" aria-live="polite"></div>
+        </div>
+
+        <div id="success-section" class="is-hidden">
+          <div class="section-card success-card">
+            <h3>Registration Complete!</h3>
+            <p id="success-detail"></p>
+            <button id="test-ring-btn" class="btn-ring">Send Test Ring to All</button>
+            <div id="ring-msg" class="msg register-msg-spaced" role="alert" aria-live="polite"></div>
+            <p class="register-another">
+              <a href="#" id="register-another">Register another Pi</a>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer class="footer-dark">
+      <img class="footer-logo" src="/TEAM4U.png" alt="Team 4 U" width="120" height="120" loading="lazy" />
+      <p class="footer-tagline">"You barked up the right tree"</p>
+    </footer>
+
     <script type="module" src="/dogbellSetup.js"></script>
   </body>
 </html>

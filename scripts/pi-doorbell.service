@@ -1,0 +1,15 @@
+[Unit]
+Description=Raspberry Pi Doorbell Button Listener
+After=network-online.target pi-credential-manager.service
+Wants=network-online.target
+Requires=pi-credential-manager.service
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/bin/python3 /home/pi/scripts/pi_doorbell.py --pi-id DOGBELL-001 --broker broker.hivemq.com --gpio 17
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

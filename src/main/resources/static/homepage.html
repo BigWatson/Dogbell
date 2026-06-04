@@ -3,11 +3,82 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Team 4 U — get a text the moment your dog is at the door. Easy Raspberry Pi doorbell setup, no app required." />
     <title>Team 4 U</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/TEAM4U.png" type="image/png" />
+    <link rel="stylesheet" href="/theme.css" />
     <link rel="stylesheet" href="/homepage.css" />
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/homepage.js"></script>
+
+    <nav class="navbar">
+      <a class="nav-brand" href="/homepage.html"><span aria-hidden="true">🐾</span> Team 4 U</a>
+      <div class="nav-links">
+        <a class="nav-link" href="/about.html">About</a>
+        <a class="nav-link" href="/login.html">Login</a>
+        <a class="btn btn-sm btn-ghost" href="/signup.html">Sign Up</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Team 4 U</h1>
+        <p class="hero-sub">You barked up the right tree.</p>
+        <div class="hero-actions">
+          <a class="btn-hero" href="/signup.html">Get Started</a>
+          <a class="btn-hero-outline" href="/login.html">Login</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/TEAM4U.png" alt="Team 4 U — You barked up the right tree" width="300" height="300" loading="eager" decoding="async" />
+      </div>
+    </section>
+
+    <section class="product">
+      <div class="product-inner">
+        <span class="product-eyebrow">Meet the Dogbell</span>
+        <h2 class="product-title">A smart doorbell — for your dog.</h2>
+        <p class="product-lead">
+          The <strong>Dogbell</strong> is a Raspberry Pi–powered doorbell built for the comfort of your whole family, including your
+          four-legged family members. Mount it by the door, and the when the Dogbell is pressed, you get an instant text message — wherever you are. No barks, no hassle. 
+        </p>
+        <p class="product-body">
+          It doesn't interfere with your existing doorbell, but provides a clear safe and dog friendly alternative. No extra app to install. 
+          Just a message sent to you and your family, with no obnoxious doorbell sound.
+          Setup takes minutes, works with any cell phone, and is a must have for all dogbell owning families.
+        </p>
+      </div>
+    </section>
+
+    <section class="features">
+      <h2 class="features-title">Why Team 4 U?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3>Instant Alerts</h3>
+          <p>Get a text the moment your dog is at the door.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🐾</div>
+          <h3>Easy Setup</h3>
+          <p>Connect your Raspberry Pi in minutes.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📱</div>
+          <h3>SMS Texts</h3>
+          <p>No app needed — works with any phone.</p>
+        </div>
+      </div>
+      <div class="features-cta">
+        <a class="btn-hero" href="/signup.html">Get Started Free</a>
+      </div>
+    </section>
+
+    <footer class="footer-dark">
+      <p class="footer-tagline">"You barked up the right tree"</p>
+      <p class="footer-copy">© 2026 Team 4 U</p>
+    </footer>
+
   </body>
 </html>

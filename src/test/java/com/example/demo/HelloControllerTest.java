@@ -1,27 +1,40 @@
 package com.example.demo;
 
-import static org.hamcrest.Matchers.equalTo;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import com.example.demo.controller.PiController;
+import com.example.demo.mqtt.MqttPublisher;
+import com.example.demo.service.PiStore;
+import com.example.demo.service.UserStore;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class HelloControllerTest {
 
-  @Autowired
-  private MockMvc mvc;
+    private MockMvc mvc;
 
-  @Test
-  public void getHello() throws Exception {
-    mvc.perform(get("/").accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk())
-        .andExpect(content().string(equalTo("Greetings from Spring Boot!")));
-  }
+    @BeforeEach
+    public void setup() {
+        PiController controller = new PiController(
+                Mockito.mock(PiStore.class),
+                Mockito.mock(UserStore.class),
+                Mockito.mock(MqttPublisher.class),
+                new ObjectMapper());
+        mvc = MockMvcBuilders.standaloneSetup(controller).build();
+    }
+
+    @Test
+    public void registerWithMissingBodyReturnsBadRequest() throws Exception {
+        mvc.perform(post("/api/pi/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+                .andExpect(status().isBadRequest());
+    }
 }

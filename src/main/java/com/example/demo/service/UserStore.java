@@ -21,6 +21,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
 
+/**
+ * NOTE: File-based encrypted storage is suitable for single-instance development / demo use.
+ * It does not support concurrent server instances. For production, migrate to a database.
+ */
 @Service
 public class UserStore {
   private static final Logger log = LoggerFactory.getLogger(UserStore.class);

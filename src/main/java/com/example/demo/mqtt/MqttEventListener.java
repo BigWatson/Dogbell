@@ -18,10 +18,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
 
-/**
- * Subscribes to device events (devices/+/events) and handles SEND_SMS_REQUEST messages.
- * When a SEND_SMS_REQUEST arrives, it validates the payload and calls SmsService to send the SMS.
- */
 @Component
 public class MqttEventListener implements MqttCallback {
 
@@ -42,12 +38,9 @@ public class MqttEventListener implements MqttCallback {
     public void init() throws MqttException {
         client.setCallback(this);
 
-        // Defer subscription until the client is connected. If the client is not
-        // yet connected (MQTT connect is performed asynchronously), start a
-        // small background thread that waits and subscribes when ready.
         new Thread(() -> {
             int attempts = 0;
-            while (attempts < 10) {
+            while (attempts < 30) {
                 try {
                     if (client.isConnected()) {
                         client.subscribe("devices/+/events", 1);
@@ -66,8 +59,24 @@ public class MqttEventListener implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-        // Connection lost handling: logging and reconnection will be handled by the Paho options
         System.err.println("MQTT connection lost: " + cause.getMessage());
+        new Thread(() -> {
+            int attempts = 0;
+            while (attempts < 30) {
+                try {
+                    if (client.isConnected()) {
+                        client.subscribe("devices/+/events", 1);
+                        System.out.println("Resubscribed to devices/+/events after reconnect");
+                        return;
+                    }
+                } catch (MqttException e) {
+                    System.err.println("Resubscribe failed: " + e.getMessage());
+                }
+                attempts++;
+                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
+            }
+            System.err.println("Could not resubscribe after reconnect");
+        }, "mqtt-resubscriber").start();
     }
 
     @Override
@@ -77,15 +86,18 @@ public class MqttEventListener implements MqttCallback {
         String type = node.path("type").asText(null);
 
         if ("DOORBELL_RING".equals(type)) {
-            // Pi pressed the button — look up the registered owner and text them
             String deviceId = extractDeviceIdFromTopic(topic);
             PiDevice device = piStore.get(deviceId);
             if (device == null || !device.isRegistered()) {
                 System.err.println("DOORBELL_RING from unregistered Pi: " + deviceId);
                 return;
             }
-            boolean ok = smsService.sendSms(device.getPhone(), "Your dog is at the door!", device.getGatewayEmail());
-            System.out.printf("Doorbell SMS to %s (Pi %s) result=%s\n", device.getUsername(), deviceId, ok);
+            // Send SMS to all registered contacts for this device
+            for (PiDevice.PhoneContact contact : device.getContacts()) {
+                boolean ok = smsService.sendSms(contact.getPhone(), "Your dog is at the door!", contact.getGatewayEmail());
+                System.out.printf("Doorbell SMS to %s/%s (Pi %s) result=%s\n",
+                        device.getUsername(), contact.getPhone(), deviceId, ok);
+            }
             return;
         }
 
@@ -93,7 +105,7 @@ public class MqttEventListener implements MqttCallback {
             String to = node.path("to").asText(null);
             String body = node.path("body").asText("");
             String requestId = node.path("requestId").asText(null);
-            String smtpGateway = node.path("smtpGateway").asText(null); // optional
+            String smtpGateway = node.path("smtpGateway").asText(null);
 
             if (to == null || to.isBlank()) {
                 System.err.println("SEND_SMS_REQUEST missing 'to' field");
@@ -103,9 +115,8 @@ public class MqttEventListener implements MqttCallback {
             boolean ok = smsService.sendSms(to, body, smtpGateway);
             System.out.printf("SMS request %s to %s result=%s\n", requestId, to, ok);
 
-            // Optionally, publish a result back to the device commands topic
             try {
-                String deviceId = extractDeviceIdFromTopic(topic); // devices/{deviceId}/events
+                String deviceId = extractDeviceIdFromTopic(topic);
                 String resultTopic = String.format("devices/%s/commands", deviceId);
                 String resultJson = mapper.writeValueAsString(new java.util.HashMap<String,Object>(){{
                     put("type","SEND_SMS_RESULT");
@@ -120,12 +131,9 @@ public class MqttEventListener implements MqttCallback {
     }
 
     @Override
-    public void deliveryComplete(IMqttDeliveryToken token) {
-        // not used for subscriptions
-    }
+    public void deliveryComplete(IMqttDeliveryToken token) {}
 
     private String extractDeviceIdFromTopic(String topic) {
-        // topic is devices/{deviceId}/events
         String[] parts = topic.split("/");
         if (parts.length >= 3) return parts[1];
         return "";

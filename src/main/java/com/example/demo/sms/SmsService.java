@@ -31,6 +31,7 @@ public class SmsService {
     @Autowired(required = false)
     private JavaMailSender mailSender;
     private final HttpClient httpClient;
+    private final com.fasterxml.jackson.databind.ObjectMapper objectMapper;
 
     @Value("${sms.from:no-reply@example.com}")
     private String fromAddress;
@@ -41,7 +42,8 @@ public class SmsService {
     @Value("${textbelt.key:textbelt}")
     private String textbeltKey;
 
-    public SmsService() {
+    public SmsService(com.fasterxml.jackson.databind.ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
         this.httpClient = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build();
     }
 
@@ -51,10 +53,9 @@ public class SmsService {
      */
     public boolean sendViaTextbelt(String to, String body, String gatewayEmail) {
         try {
-            String gwPart = (gatewayEmail != null && !gatewayEmail.isBlank())
-                    ? String.format(",\"gatewayEmail\":\"%s\"", escapeJson(gatewayEmail)) : "";
-            String json = String.format("{\"phone\":\"%s\",\"message\":\"%s\",\"key\":\"%s\"%s}",
-                    escapeJson(to), escapeJson(body), escapeJson(textbeltKey), gwPart);
+            java.util.Map<String, String> payload = java.util.Map.of(
+                    "phone", to, "message", body, "key", textbeltKey);
+            String json = objectMapper.writeValueAsString(payload);
 
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(textbeltUrl + "/text"))
@@ -65,7 +66,9 @@ public class SmsService {
 
             HttpResponse<String> resp = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
             log.info("Textbelt response: status={} body={}", resp.statusCode(), resp.body());
-            return resp.statusCode() == 200;
+            if (resp.statusCode() != 200) return false;
+            com.fasterxml.jackson.databind.JsonNode respNode = objectMapper.readTree(resp.body());
+            return respNode.path("success").asBoolean(false);
         } catch (Exception e) {
             log.warn("Textbelt failed: {}", e.getMessage());
             return false;
@@ -92,18 +95,13 @@ public class SmsService {
     }
 
     /**
-     * Convenience wrapper: try Textbelt first, fall back to SMTP gateway address if provided.
+     * Convenience wrapper: use SMTP email-to-SMS gateway when a carrier gateway address
+     * is provided (most reliable for this project), otherwise fall back to Textbelt HTTP API.
      */
-    public boolean sendSms(String to, String body, String smtpGatewayAddressFallback) {
-        boolean ok = sendViaTextbelt(to, body, smtpGatewayAddressFallback);
-        if (ok) return true;
-        if (smtpGatewayAddressFallback != null && !smtpGatewayAddressFallback.isBlank()) {
-            return sendViaSmtp(smtpGatewayAddressFallback, body);
+    public boolean sendSms(String to, String body, String smtpGatewayAddress) {
+        if (smtpGatewayAddress != null && !smtpGatewayAddress.isBlank()) {
+            return sendViaSmtp(smtpGatewayAddress, body);
         }
-        return false;
-    }
-
-    private static String escapeJson(String s) {
-        return s.replace("\\", "\\\\").replace("\"", "\\\"");
+        return sendViaTextbelt(to, body, null);
     }
 }

@@ -3,11 +3,45 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Your Team 4 U home — set up your Raspberry Pi doorbell or jump to your dashboard." />
     <title>Team 4 U</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/TEAM4U.png" type="image/png" />
+    <link rel="stylesheet" href="/theme.css" />
     <link rel="stylesheet" href="/homepage.css" />
   </head>
   <body>
-    <div id="app"></div>
+
+    <nav class="navbar">
+      <a class="nav-brand" href="/loggedInHomepage.html"><span aria-hidden="true">🐾</span> Team 4 U</a>
+      <div class="nav-links">
+        <a class="nav-link" href="/about.html">About Us</a>
+        <a class="nav-link" href="/dogbellSetup.html">Dogbell</a>
+        <a class="nav-link" href="/dashboard.html">Dashboard</a>
+        <button class="btn btn-sm" id="sign-out-btn" type="button">Sign Out</button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-title">Team 4 U</h1>
+        <p class="hero-sub">You barked up the right tree.</p>
+        <div class="hero-actions">
+          <a class="btn-hero" href="/dogbellSetup.html">Set Up Dogbell</a>
+          <a class="btn-hero-outline" href="/about.html">About Us</a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="/TEAM4U.png" alt="Team 4 U — You barked up the right tree" width="300" height="300" loading="eager" decoding="async" />
+      </div>
+    </section>
+
+    <footer class="footer-dark">
+      <p class="footer-tagline">"You barked up the right tree"</p>
+      <p class="footer-copy">© 2026 Team 4 U</p>
+    </footer>
+
     <script type="module" src="/loggedInHomepage.js"></script>
+
   </body>
 </html>

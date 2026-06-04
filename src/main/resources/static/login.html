@@ -3,20 +3,39 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="description" content="Sign in to your Team 4 U account to manage your Raspberry Pi doorbell." />
     <title>Login - Team 4 U</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/TEAM4U.png" type="image/png" />
+    <link rel="stylesheet" href="/theme.css" />
     <link rel="stylesheet" href="/login.css" />
   </head>
   <body>
-    <div class="header">Login</div>
+
+    <nav class="navbar">
+      <a class="nav-brand" href="/homepage.html"><span aria-hidden="true">🐾</span> Team 4 U</a>
+      <div class="nav-links">
+        <a class="nav-link" href="/homepage.html">Home</a>
+        <a class="nav-link" href="/signup.html">Sign Up</a>
+      </div>
+    </nav>
+
     <main class="center">
-      <form id="login-form" style="display:flex;flex-direction:column;gap:10px;max-width:360px;width:100%;">
-        <input id="username" placeholder="Username" required />
-        <input id="password" placeholder="Password" type="password" required />
+      <form id="login-form">
+        <h2 class="form-title">Login</h2>
+        <label for="username" class="form-label">Username</label>
+        <input id="username" name="username" placeholder="Your username" autocomplete="username" required />
+        <label for="password" class="form-label">Password</label>
+        <input id="password" name="password" placeholder="Your password" type="password" autocomplete="current-password" required />
         <button class="btn" type="submit">Sign in</button>
-        <div id="msg" style="color:#f88"></div>
+        <div id="msg" class="msg" role="alert" aria-live="polite"></div>
       </form>
     </main>
-    <footer class="footer"><a href="/homepage.html" style="color:#fff">Back</a></footer>
+
+    <footer class="footer">
+      <a href="/homepage.html" class="back-link">← Back to Home</a>
+    </footer>
+
     <script type="module" src="/login.js"></script>
   </body>
 </html>

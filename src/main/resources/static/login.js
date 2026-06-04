@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     msg.textContent = '';
+    msg.className = 'msg';
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value;
     if (username.length === 0 || password.length === 0) { msg.textContent = 'Enter username and password'; return; }
@@ -24,16 +25,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       if (data.twoFactor) {
-        // show TOTP input
-        showTwoFactorPrompt(username);
+        showTwoFactorPrompt();
         return;
       }
-      msg.style.color = '#8f8';
+      msg.className = 'msg success';
       msg.textContent = 'Login successful — redirecting...';
-      // mark logged-in state on the window and in localStorage so other modules can read it
-      window.isLoggedIn = true;
-      try { localStorage.setItem('isLoggedIn', '1'); } catch (e) { /* ignore */ }
-      setTimeout(() => location.href = '/dashboard.html', 700);
+      setTimeout(() => location.href = '/loggedInHomepage.html', 700);
     } catch (err) {
       console.error(err);
       msg.textContent = 'Request failed';
@@ -44,17 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-function showTwoFactorPrompt(username) {
+function showTwoFactorPrompt() {
   const container = document.createElement('div');
-  container.style.marginTop = '12px';
+  container.className = 'twofa-inline';
   container.innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:8px;max-width:360px;margin:0 auto;">
-      <input id="totp-code" placeholder="Enter 6-digit code" />
-      <div style="display:flex;gap:8px;justify-content:center;">
-        <button id="verify-2fa" class="btn">Verify</button>
-      </div>
-      <div id="2fa-msg" class="msg"></div>
-    </div>
+    <label for="totp-code" class="form-label">Authentication code</label>
+    <input id="totp-code" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric" />
+    <button id="verify-2fa" class="btn" type="button">Verify</button>
+    <div id="2fa-msg" class="msg" role="alert" aria-live="polite"></div>
   `;
   const form = document.getElementById('login-form');
   form.appendChild(container);
@@ -67,13 +61,13 @@ function showTwoFactorPrompt(username) {
       const res = await fetch('/api/2fa/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, code })
+        body: JSON.stringify({ code })
       });
       const d = await res.json();
       if (!res.ok) { m.textContent = d.error || 'Verification failed'; return; }
-      m.style.color = '#8f8';
+      m.className = 'msg success';
       m.textContent = '2FA verified — redirecting...';
-      setTimeout(() => location.href = '/dashboard.html', 700);
+      setTimeout(() => location.href = '/loggedInHomepage.html', 700);
     } catch (err) {
       console.error(err);
       m.textContent = 'Request failed';

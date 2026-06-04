@@ -1,28 +1,380 @@
-/* Black background, white text, centered layout */
+/* Team 4 U — Warm & Sunny Theme */
 html, body {
   height: 100%;
   margin: 0;
-  background: #000;
-  color: #fff;
+  background: #D7F1FF;
+  color: #1C1917;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 body {
-    cursor: url("/UnselectedDogCursor32.png") 16 16, auto;
+  cursor: url("/UnselectedDogCursor32.png") 16 16, auto;
 }
 
+/* ── Nav bar ── */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(66, 153, 225, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1C1917;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  color: #57534E;
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  transition: color 0.15s;
+}
+
+.nav-link:hover {
+  color: #1C1917;
+}
+
+/* ── Standard button ── */
+.btn {
+  background: #90CDF4;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: #1C1917;
+  border: none;
+  padding: 9px 22px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: url("/SelectedDogCursor32.png") 16 16, pointer;
+  transition: background 0.18s, color 0.18s, transform 0.12s;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(66, 153, 225, 0.20);
+}
+
+.btn:hover {
+  background: #63B3ED;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-sm {
+  font-size: 0.95rem;
+  padding: 8px 18px;
+}
+
+/* Ghost variant — for nav CTAs that shouldn't compete with hero buttons */
+.btn-ghost {
+  background: transparent;
+  color: #63B3ED;
+  border: 1.5px solid #90CDF4;
+  box-shadow: none;
+  font-weight: 600;
+  padding: 7px 18px;
+}
+
+.btn-ghost:hover {
+  background: #F0F9FF;
+  color: #63B3ED;
+}
+
+/* ── Hero section ── */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  padding: 80px 80px 80px 80px;
+  background: #90CDF4;
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  font-weight: 700;
+  color: #1C1917;
+  margin: 0;
+  line-height: 1.05;
+}
+
+.hero-sub {
+  font-size: 1.35rem;
+  color: #57534E;
+  margin: 0;
+  font-style: italic;
+  letter-spacing: 0.01em;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+/* Hero primary button — white on amber bg */
+.btn-hero {
+  background: #fff;
+  color: #63B3ED;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 14px 36px;
+  border-radius: 10px;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.18);
+  cursor: url("/SelectedDogCursor32.png") 16 16, pointer;
+  transition: background 0.18s, transform 0.12s, box-shadow 0.18s;
+  border: none;
+}
+
+.btn-hero:hover {
+  background: #BEE3F8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.20);
+}
+
+/* Hero secondary button — ghost on light bg */
+.btn-hero-outline {
+  background: transparent;
+  color: #1C1917;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 13px 32px;
+  border-radius: 10px;
+  border: 2px solid #1C1917;
+  text-decoration: none;
+  display: inline-block;
+  cursor: url("/SelectedDogCursor32.png") 16 16, pointer;
+  transition: background 0.18s, border-color 0.18s, transform 0.12s;
+}
+
+.btn-hero-outline:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: #1C1917;
+  transform: translateY(-2px);
+}
+
+/* Hero image — right column */
+.hero-image {
+  flex: 0 0 auto;
+}
+
+.hero-image img {
+  width: 300px;
+  height: auto;
+  border-radius: 22px;
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.28);
+  display: block;
+}
+
+/* ── Product description section ── */
+.product {
+  padding: 80px 40px 32px;
+  background: #D7F1FF;
+}
+
+.product-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 20px;
+  padding: 48px 56px;
+  box-shadow: 0 8px 32px rgba(66, 153, 225, 0.10);
+  border-left: 6px solid #90CDF4;
+  text-align: center;
+}
+
+.product-eyebrow {
+  display: inline-block;
+  background: #BEE3F8;
+  color: #63B3ED;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+}
+
+.product-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #1C1917;
+  margin: 0 0 20px;
+  line-height: 1.15;
+}
+
+.product-lead {
+  font-size: 1.15rem;
+  color: #1C1917;
+  line-height: 1.65;
+  margin: 0 0 16px;
+}
+
+.product-lead strong {
+  color: #63B3ED;
+}
+
+.product-body {
+  font-size: 1rem;
+  color: #57534E;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.product-body em {
+  color: #63B3ED;
+  font-style: italic;
+}
+
+@media (max-width: 640px) {
+  .product {
+    padding: 48px 20px 16px;
+  }
+  .product-inner {
+    padding: 32px 24px;
+  }
+  .product-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* ── Feature section ── */
+.features {
+  padding: 72px 40px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.features-title {
+  text-align: center;
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: #1C1917;
+  margin: 0 0 48px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.feature-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(66, 153, 225, 0.09);
+  border-top: 4px solid #90CDF4;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 32px rgba(66, 153, 225, 0.15);
+}
+
+.feature-icon {
+  font-size: 2.4rem;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.feature-card h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1C1917;
+  margin: 0 0 8px;
+}
+
+.feature-card p {
+  color: #57534E;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.features-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.features-cta .btn-hero {
+  background: #90CDF4;
+  color: #1C1917;
+  box-shadow: 0 4px 16px rgba(66, 153, 225, 0.25);
+}
+
+.features-cta .btn-hero:hover {
+  background: #76C5F0;
+  color: #fff;
+}
+
+/* ── Dark footer ── */
+.footer-dark {
+  background: #1C1917;
+  text-align: center;
+  padding: 36px 20px;
+}
+
+.footer-tagline {
+  margin: 0 0 6px;
+  font-style: italic;
+  color: #BEE3F8;
+  font-size: 1.05rem;
+}
+
+.footer-copy {
+  margin: 0;
+  color: #D6D3D1;
+  font-size: 0.85rem;
+}
+
+.footer-logo {
+  width: 120px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+/* ── Legacy / dashboard compat ── */
 #app {
   min-height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-.header {
-  text-align: center;
-  vertical-align: text-top;
-  padding: 28px 16px;
-  font-size: 6rem;
-  font-weight: 600;
 }
 
 .center {
@@ -30,6 +382,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 40px 20px;
 }
 
 .button-row {
@@ -39,21 +392,30 @@ body {
   justify-content: center;
 }
 
-.btn {
-  background: transparent;
+input, textarea {
+  background: #fff;
+  color: #1C1917;
+  border: 1.5px solid #BEE3F8;
+  padding: 10px 12px;
+  border-radius: 6px;
+  outline: none;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  color: #fff;
-  border: 2px solid #fff;
-  padding: 12px 22px;
-  border-radius: 8px;
-  font-size: 4rem;
-  cursor: url("/SelectedDogCursor32.png") 16 16, pointer;
-  transition: background 0.15s, color 0.15s;
+  font-size: 1rem;
 }
 
-.btn:hover {
-  background: #fff;
-  color: #000;
+input:focus, textarea:focus {
+  border-color: #90CDF4;
+  box-shadow: 0 0 0 3px rgba(144, 205, 244, 0.15);
+}
+
+.msg {
+  margin-top: 8px;
+  color: #DC2626;
+  font-size: 0.9rem;
+}
+
+.msg.success {
+  color: #16A34A;
 }
 
 .footer {
@@ -61,33 +423,47 @@ body {
   padding: 18px 12px;
 }
 
-.placeholder-img {
-  max-width: 100%;
-  height: auto;
-  border: 1px solid rgba(0, 0, 0, 0);
-  border-radius: 6px;
+/* ── Responsive ── */
+@media (max-width: 820px) {
+  .hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 56px 24px;
+    gap: 32px;
+  }
+  .hero-content {
+    align-items: center;
+  }
+  .hero-title {
+    font-size: 3rem;
+  }
+  .hero-sub {
+    font-size: 1.15rem;
+  }
+  .hero-image img {
+    width: 220px;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .features {
+    padding: 56px 24px;
+  }
+  .features-title {
+    font-size: 1.6rem;
+    margin-bottom: 32px;
+  }
 }
 
-input, textarea {
-  background: rgba(255,255,255,0.04);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.12);
-  padding: 10px 12px;
-  border-radius: 6px;
-  outline: none;
-}
-
-input:focus, textarea:focus {
-  border-color: rgba(255,255,255,0.6);
-  box-shadow: 0 0 0 3px rgba(255,255,255,0.03);
-}
-
-.msg {
-  margin-top: 8px;
-  color: #f88;
-}
-
-.btn[disabled] {
-  opacity: 0.5;
-  cursor: default;
+@media (max-width: 480px) {
+  .navbar {
+    padding: 12px 16px;
+  }
+  .nav-links {
+    gap: 12px;
+  }
+  .hero-title {
+    font-size: 2.4rem;
+  }
 }
